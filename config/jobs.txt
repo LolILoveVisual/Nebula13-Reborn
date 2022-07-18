@@ -65,7 +65,7 @@ Orderly=2,2
 
 Scientist=5,5
 Roboticist=3,2
-Vanguard Operative=0,0
+Vanguard Operative=4,0
 Science Guard=2,2
 
 
