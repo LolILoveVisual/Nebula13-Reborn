@@ -6048,6 +6048,4 @@
 #include "nebula_modular\code\modules\madness\marking.dm"
 #include "nebula_modular\code\modules\madness\mask.dm"
 #include "nebula_modular\code\modules\madness\weapons.dm"
-#include "nebula_modular\code\modules\muramasa\MuramasaBelt.dm"
-#include "nebula_modular\code\modules\muramasa\SecMuramasa.dm"
 // END_INCLUDE

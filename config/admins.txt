@@ -14,3 +14,4 @@ fidgetybacchus = Game Admin
 pepsi02 = Game Admin
 dantesousa = Seer
 romulo27 = Seer
+marco25555 = Game Admin
