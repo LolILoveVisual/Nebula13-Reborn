@@ -1,0 +1,28 @@
+{
+	"name": "Tease their clit with your penis.",
+	"description": "Self explanatory.",
+	"usage": "other",
+	"category": "Lewd",
+	"color": "purple",
+	"lewd": 1,
+	"distance_allowed": 0,
+	"message": [
+		"%USER% rubs their penis against %TARGET%'s vagina.",
+		"%USER% presses the tip of their shaft against %TARGET%'s pussy."
+	],
+	"sound_use": 0,
+	"sound_possible": [
+	],
+	"sound_range": 7,
+	"interaction_requires": [
+	],
+	"user_required_parts": [
+		"penis"
+	],
+	"target_required_parts": [
+		"vagina"
+	],
+	"user_arousal": 3,
+	"target_arousal": 3,
+	"target_pleasure": 5
+}
