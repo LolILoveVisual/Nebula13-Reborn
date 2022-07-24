@@ -12,5 +12,7 @@ rerom = Head Admin
 argentinogostoso = Game Admin
 fidgetybacchus = Game Admin
 pepsi02 = Game Admin
+Bruno-Asbahr = Game Admin
+Baeiou = Game Admin
 dantesousa = Seer
 romulo27 = Seer
