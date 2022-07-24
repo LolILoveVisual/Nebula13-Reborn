@@ -375,6 +375,8 @@
 	timeout = 10 MINUTES
 
 /mob/living/carbon/human/proc/climax(manual = TRUE)
+	pleasure = 0 // NEBULA CHANGE
+	arousal = 0 // NEBULA CHANGE
 	if (CONFIG_GET(flag/disable_erp_preferences))
 		return
 

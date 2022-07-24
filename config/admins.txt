@@ -16,3 +16,4 @@ Bruno-Asbahr = Game Admin
 Baeiou = Game Admin
 dantesousa = Seer
 romulo27 = Seer
+marco25555 = Game Admin
