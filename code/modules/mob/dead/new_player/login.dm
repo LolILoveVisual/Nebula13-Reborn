@@ -31,14 +31,14 @@
 	//SKYRAT EDIT ADDITION
 	var/soft_player_cap = CONFIG_GET(number/player_soft_cap)
 	if(soft_player_cap >= TGS_CLIENT_COUNT)
-		INVOKE_ASYNC(src, .proc/connect_to_second_server)
+		INVOKE_ASYNC(src, PROC_REF(connect_to_second_server))
 	//SKYRAT EDIT END
 
 	var/spc = CONFIG_GET(number/soft_popcap)
 	if(spc && living_player_count() >= spc)
 		to_chat(src, span_notice("<b>Server Notice:</b>\n \t [CONFIG_GET(string/soft_popcap_message)]"))
 
-	sight |= SEE_TURFS
+	add_sight(SEE_TURFS)
 
 	client.playtitlemusic()
 

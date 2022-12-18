@@ -29,7 +29,7 @@
 /mob/living/simple_animal/parrot
 	name = "parrot"
 	desc = "The parrot squawks, \"They're a Parrot! BAWWK!\"" //'
-	icon = 'icons/mob/animal.dmi'
+	icon = 'icons/mob/simple/animal.dmi'
 	icon_state = "parrot_fly"
 	icon_living = "parrot_fly"
 	icon_dead = "parrot_dead"
@@ -163,8 +163,9 @@
 	. += "Held Item: [held_item]"
 	. += "Combat mode: [combat_mode ? "On" : "Off"]"
 
-/* SKYRAT EDIT - MOVED TO modular_skyrat/modules/poly_commands
-/mob/living/simple_animal/parrot/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, list/message_mods = list())
+// SKYRAT EDIT REMOVAL BEGIN - MOVED TO modular_skyrat/modules/poly_commands
+/*
+/mob/living/simple_animal/parrot/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
 	. = ..()
 	if(speaker != src && prob(50)) //Dont imitate ourselves
 		if(!radio_freq || prob(10))
@@ -174,6 +175,7 @@
 	if(speaker == src && !client) //If a parrot squawks in the woods and no one is around to hear it, does it make a sound? This code says yes!
 		return message
 */
+// SKYRAT EDIT REMOVAL END
 
 /mob/living/simple_animal/parrot/radio(message, list/message_mods = list(), list/spans, language) //literally copied from human/radio(), but there's no other way to do this. at least it's better than it used to be.
 	. = ..()
@@ -426,7 +428,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 				icon_state = icon_living
 				return
 
-		if(--parrot_sleep_dur) //Zzz
+		parrot_sleep_dur--
+		if(parrot_sleep_dur) //Zzz
 			return
 
 		else
@@ -482,7 +485,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 		if(!held_item && !parrot_perch) //If we've got nothing to do.. look for something to do.
 			var/atom/movable/AM = search_for_perch_and_item() //This handles checking through lists so we know it's either a perch or stealable item
 			if(AM)
-				if(istype(AM, /obj/item) || isliving(AM)) //If stealable item
+				if(isitem(AM) || isliving(AM)) //If stealable item
 					parrot_interest = AM
 					manual_emote("turns and flies towards [parrot_interest].")
 					parrot_state = PARROT_SWOOP | PARROT_STEAL
@@ -645,7 +648,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 		//Skip items we already stole or are wearing or are too big
 		if(parrot_perch && AM.loc == parrot_perch.loc || AM.loc == src)
 			continue
-		if(istype(AM, /obj/item))
+		if(isitem(AM))
 			var/obj/item/I = AM
 			if(I.w_class < WEIGHT_CLASS_SMALL)
 				item = I
@@ -656,7 +659,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 					item = I
 					break
 		if(item)
-			if(!get_path_to(src, item))
+			if(!length(get_path_to(src, item))) // WHY DO WE DISREGARD THE PATH AHHHHHH
 				item = null
 				continue
 			return item
@@ -679,7 +682,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 		if(parrot_perch && AM.loc == parrot_perch.loc || AM.loc == src)
 			continue
 
-		if(istype(AM, /obj/item))
+		if(isitem(AM))
 			var/obj/item/I = AM
 			if(I.w_class <= WEIGHT_CLASS_SMALL)
 				return I
@@ -789,7 +792,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 
 
 	if(!drop_gently)
-		if(istype(held_item, /obj/item/grenade))
+		if(isgrenade(held_item))
 			var/obj/item/grenade/G = held_item
 			G.forceMove(drop_location())
 			G.detonate()

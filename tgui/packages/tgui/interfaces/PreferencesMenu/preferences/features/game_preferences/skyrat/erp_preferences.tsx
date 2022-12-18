@@ -14,13 +14,6 @@ export const erp_pref: FeatureToggle = {
   component: CheckboxInput,
 };
 
-export const cum_face_pref: FeatureToggle = {
-  name: 'Cum face',
-  category: 'ERP',
-  description: "Toggles if you are able to recieve the 'cumface' trait.",
-  component: CheckboxInput,
-};
-
 export const bimbofication_pref: FeatureToggle = {
   name: 'Bimbofication',
   category: 'ERP',
@@ -89,4 +82,12 @@ export const erp_sexuality_pref: FeatureChoiced = {
   description:
     'Determines what sexual content you see, limited use. None will show all content.',
   component: FeatureDropdownInput,
+};
+
+export const new_genitalia_growth_pref: FeatureToggle = {
+  name: 'ERP New Genitalia Growth',
+  category: 'ERP',
+  description:
+    'If checked, allows drugs to grow new genitalia on your character.',
+  component: CheckboxInput,
 };

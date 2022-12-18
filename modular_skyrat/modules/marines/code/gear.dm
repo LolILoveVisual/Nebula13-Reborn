@@ -12,9 +12,7 @@
 	spread = 6
 	pin = /obj/item/firing_pin/implant/mindshield
 	can_suppress = FALSE
-	emp_damageable = FALSE
 	can_bayonet = FALSE
-	realistic = FALSE
 	mag_display = TRUE
 	mag_display_ammo = FALSE
 	mag_type = /obj/item/ammo_box/magazine/m44a
@@ -51,7 +49,7 @@
 	icon_state = "m44a_s"
 	inhand_icon_state = "m44a_s"
 
-/obj/item/gun/ballistic/automatic/ar/modular/m44a/scoped/Initialize()
+/obj/item/gun/ballistic/automatic/ar/modular/m44a/scoped/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 2.2)
 
@@ -74,7 +72,7 @@
 	/// Reference to the underbarrel shotgun
 	var/obj/item/gun/ballistic/shotgun/automatic/as2/ubsg/underbarrel
 
-/obj/item/gun/ballistic/automatic/ar/modular/m44a/shotgun/Initialize()
+/obj/item/gun/ballistic/automatic/ar/modular/m44a/shotgun/Initialize(mapload)
 	. = ..()
 	underbarrel = new /obj/item/gun/ballistic/shotgun/automatic/as2/ubsg(src)
 	update_appearance()
@@ -98,7 +96,7 @@
 	/// Underbarrel grenade launcher reference
 	var/obj/item/gun/ballistic/revolver/grenadelauncher/underbarrel
 
-/obj/item/gun/ballistic/automatic/ar/modular/m44a/grenadelauncher/Initialize()
+/obj/item/gun/ballistic/automatic/ar/modular/m44a/grenadelauncher/Initialize(mapload)
 	. = ..()
 	underbarrel = new /obj/item/gun/ballistic/revolver/grenadelauncher/unrestricted(src)
 	update_appearance()

@@ -17,6 +17,12 @@
 		if(GENITAL_HIDDEN_BY_CLOTHES)
 			if((H.w_uniform && H.w_uniform.body_parts_covered & genital_location) || (H.wear_suit && H.wear_suit.body_parts_covered & genital_location))
 				return TRUE
+			if(istype(H.wear_suit, /obj/item/clothing/suit/toggle/labcoat/skyrat/hospitalgown)) //Until this file has a way to force-hide from items, this'll have to do
+				return TRUE
+			else if (H.underwear != "Nude" && !(H.underwear_visibility & UNDERWEAR_HIDE_UNDIES) && genital_location == CHEST)	//They're wearing not-hidden underwear, let's make sure it doesn't cover the chest (i.e. Bikinis/one-pieces)
+				var/datum/sprite_accessory/underwear/possible_chest_covering_underwear = GLOB.underwear_list[H.underwear]
+				if(possible_chest_covering_underwear?.covers_chest == TRUE) //covers_chest is a var added in `modular_skyrat\modules\customization\modules\mob\dead\new_player\sprite_accessories.dm`
+					return TRUE
 			else
 				return FALSE
 		else
@@ -35,7 +41,7 @@
 	icon = 'modular_skyrat/master_files/icons/mob/sprite_accessory/genitals/penis_onmob.dmi'
 	organ_type = /obj/item/organ/external/genital/penis
 	associated_organ_slot = ORGAN_SLOT_PENIS
-	key = "penis"
+	key = ORGAN_SLOT_PENIS
 	color_src = USE_MATRIXED_COLORS
 	always_color_customizable = TRUE
 	center = TRUE
@@ -117,7 +123,7 @@
 	icon = 'modular_skyrat/master_files/icons/mob/sprite_accessory/genitals/testicles_onmob.dmi'
 	organ_type = /obj/item/organ/external/genital/testicles
 	associated_organ_slot = ORGAN_SLOT_TESTICLES
-	key = "testicles"
+	key = ORGAN_SLOT_TESTICLES
 	always_color_customizable = TRUE
 	special_icon_case = TRUE
 	special_x_dimension = TRUE
@@ -168,7 +174,7 @@
 	icon = 'modular_skyrat/master_files/icons/mob/sprite_accessory/genitals/vagina_onmob.dmi'
 	organ_type = /obj/item/organ/external/genital/vagina
 	associated_organ_slot = ORGAN_SLOT_VAGINA
-	key = "vagina"
+	key = ORGAN_SLOT_VAGINA
 	always_color_customizable = TRUE
 	default_color = "#FFCCCC"
 	relevent_layers = list(BODY_FRONT_LAYER)
@@ -224,7 +230,7 @@
 /datum/sprite_accessory/genital/womb
 	organ_type = /obj/item/organ/external/genital/womb
 	associated_organ_slot = ORGAN_SLOT_WOMB
-	key = "womb"
+	key = ORGAN_SLOT_WOMB
 	genetic = TRUE
 
 /datum/sprite_accessory/genital/womb/none
@@ -241,7 +247,7 @@
 /datum/sprite_accessory/genital/anus
 	organ_type = /obj/item/organ/external/genital/anus
 	associated_organ_slot = ORGAN_SLOT_ANUS
-	key = "anus"
+	key = ORGAN_SLOT_ANUS
 	genetic = TRUE
 
 /datum/sprite_accessory/genital/anus/is_hidden(mob/living/carbon/human/owner, obj/item/bodypart/bodypart)
@@ -264,7 +270,7 @@
 	icon = 'modular_skyrat/master_files/icons/mob/sprite_accessory/genitals/breasts_onmob.dmi'
 	organ_type = /obj/item/organ/external/genital/breasts
 	associated_organ_slot = ORGAN_SLOT_BREASTS
-	key = "breasts"
+	key = ORGAN_SLOT_BREASTS
 	always_color_customizable = TRUE
 	default_color = DEFAULT_SKIN_OR_PRIMARY
 	relevent_layers = list(BODY_BEHIND_LAYER, BODY_FRONT_LAYER)

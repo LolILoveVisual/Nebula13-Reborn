@@ -6,7 +6,7 @@
 	icon_state = "clamps"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
 	w_class = WEIGHT_CLASS_TINY
-	slot_flags = ITEM_SLOT_NIPPLES
+	lewd_slot_flags = LEWD_SLOT_NIPPLES
 	/// What kind are the wearer's breasts?
 	var/breast_type = null
 	/// What size are the wearer's breasts?
@@ -20,12 +20,9 @@
 	if(!isinhands)
 		. += clamps_overlay
 
-/obj/item/clothing/sextoy/nipple_clamps/ComponentInitialize()
+/obj/item/clothing/sextoy/nipple_clamps/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
-
-/obj/item/clothing/sextoy/nipple_clamps/Initialize()
-	. = ..()
 
 	update_icon_state()
 
@@ -76,12 +73,12 @@
 	var/obj/item/organ/external/genital/breasts/target_breast = target.getorganslot(ORGAN_SLOT_BREASTS)
 	if(!target || !target_breast)
 		return
-	target.adjustArousal(1 * delta_time)
+	target.adjust_arousal(1 * delta_time)
 	if(target.pain < 27.5) //To prevent maxing pain by just pair of clamps.
-		target.adjustPain(1 * delta_time)
+		target.adjust_pain(1 * delta_time)
 
 	if(target.arousal < 15)
-		target.adjustArousal(1 * delta_time)
+		target.adjust_arousal(1 * delta_time)
 
 	if(target_breast.aroused != AROUSAL_CANT)
 		target_breast.aroused = AROUSAL_FULL //Clamps keeping nipples aroused

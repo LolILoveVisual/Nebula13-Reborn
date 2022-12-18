@@ -1,9 +1,8 @@
-#define REGENERATION_DELAY 5 SECONDS  // After taking damage, how long it takes for automatic regeneration to begin
+#define REGENERATION_DELAY (5 SECONDS)  // After taking damage, how long it takes for automatic regeneration to begin
 
 /datum/species/mutant
 	name = "High-Functioning mutant"
 	id = SPECIES_MUTANT
-	say_mod = "moans"
 	meat = /obj/item/food/meat/slab/human/mutant/zombie
 	eyes_icon = 'modular_skyrat/modules/mutants/icons/mutant_eyes.dmi'
 	species_traits = list(
@@ -31,7 +30,7 @@
 	inherent_biotypes = MOB_UNDEAD | MOB_HUMANOID
 	mutanttongue = /obj/item/organ/internal/tongue/zombie
 	disliked_food = NONE
-	liked_food = GROSS | MEAT | RAW
+	liked_food = GROSS | MEAT | RAW | GORE
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | ERT_SPAWN
 	bodytemp_normal = T0C // They have no natural body heat, the environment regulates body temp
 	bodytemp_heat_damage_limit = FIRE_MINIMUM_TEMPERATURE_TO_SPREAD // Take damage at fire temp
@@ -47,14 +46,14 @@
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/mutant_zombie,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/mutant_zombie,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/l_arm/mutant_zombie,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/r_arm/mutant_zombie,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/mutant_zombie,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/mutant_zombie
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/mutant_zombie,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/mutant_zombie,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/mutant_zombie,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/mutant_zombie
 	)
 
 /datum/species/mutant/check_roundstart_eligible()
-	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
+	if(check_holidays(HALLOWEEN))
 		return TRUE
 	return ..()
 
@@ -161,7 +160,7 @@
 	sharpness = NONE
 	wound_bonus = -40
 
-/obj/item/mutant_hand/Initialize()
+/obj/item/mutant_hand/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 
@@ -223,6 +222,7 @@
 /obj/item/mutant_hand/proc/check_feast(mob/living/target, mob/living/user)
 	if(target.stat == DEAD)
 		var/hp_gained = target.maxHealth
+		target.investigate_log("has been feasted upon by the mutant [user].", INVESTIGATE_DEATHS)
 		target.gib()
 		// zero as argument for no instant health update
 		user.adjustBruteLoss(-hp_gained, 0)

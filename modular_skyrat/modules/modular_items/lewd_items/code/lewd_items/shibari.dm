@@ -57,12 +57,12 @@
 /obj/item/stack/shibari_rope/update_overlays()
 	. = ..()
 	if(glow)
-		. += emissive_appearance(icon, icon_state, alpha = alpha)
+		. += emissive_appearance(icon, icon_state, src, alpha = alpha)
 
 /obj/item/stack/shibari_rope/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(glow)
-		. += emissive_appearance(standing.icon, standing.icon_state, alpha = standing.alpha)
+		. += emissive_appearance(standing.icon, standing.icon_state, src, alpha = standing.alpha)
 
 /obj/item/stack/shibari_rope/update_icon_state()
 	if(amount <= (max_amount * (1/3)))
@@ -88,16 +88,13 @@
 
 /obj/item/stack/shibari_rope/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
 	. = ..()
-	RegisterSignal(src, COMSIG_ITEM_ATTACK, .proc/handle_roping)
+	AddElement(/datum/element/update_icon_updates_onmob)
+	RegisterSignal(src, COMSIG_ITEM_ATTACK, PROC_REF(handle_roping))
 	if(!greyscale_colors)
 		var/new_color = "#"
 		for(var/i in 1 to 3)
 			new_color += num2hex(rand(0, 255), 2)
 		set_greyscale(colors = list(new_color))
-
-/obj/item/stack/shibari_rope/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/stack/shibari_rope/proc/handle_roping(datum/source, mob/living/carbon/attacked, mob/living/user)
 	SIGNAL_HANDLER
@@ -111,22 +108,22 @@
 		return
 	switch(user.zone_selected)
 		if(BODY_ZONE_L_LEG)
-			INVOKE_ASYNC(src, .proc/handle_leg_tying, attacked, user)
+			INVOKE_ASYNC(src, PROC_REF(handle_leg_tying), attacked, user)
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 		if(BODY_ZONE_R_LEG)
-			INVOKE_ASYNC(src, .proc/handle_leg_tying, attacked, user)
+			INVOKE_ASYNC(src, PROC_REF(handle_leg_tying), attacked, user)
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 		if(BODY_ZONE_PRECISE_GROIN)
-			INVOKE_ASYNC(src, .proc/handle_groin_tying, attacked, user)
+			INVOKE_ASYNC(src, PROC_REF(handle_groin_tying), attacked, user)
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 		if(BODY_ZONE_CHEST)
-			INVOKE_ASYNC(src, .proc/handle_chest_tying, attacked, user)
+			INVOKE_ASYNC(src, PROC_REF(handle_chest_tying), attacked, user)
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 		if(BODY_ZONE_L_ARM)
-			INVOKE_ASYNC(src, .proc/handle_arm_tying, attacked, user)
+			INVOKE_ASYNC(src, PROC_REF(handle_arm_tying), attacked, user)
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 		if(BODY_ZONE_R_ARM)
-			INVOKE_ASYNC(src, .proc/handle_arm_tying, attacked, user)
+			INVOKE_ASYNC(src, PROC_REF(handle_arm_tying), attacked, user)
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 
 

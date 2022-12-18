@@ -8,7 +8,7 @@
 	icon = 'modular_skyrat/modules/aesthetics/storage/storage.dmi'
 
 /obj/item/storage/part_replacer/bluespace
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/storage.dmi'
 
 /obj/item/storage/part_replacer/cyborg
 	icon = 'modular_skyrat/modules/aesthetics/storage/storage.dmi'
@@ -94,19 +94,3 @@
 
 /obj/item/storage/box/cyber_implants
 	illustration = null //Included in the sprite
-
-//Unchanged from TG:
-/obj/item/storage/box/monkeycubes
-	icon = 'icons/obj/storage.dmi'
-
-/obj/item/storage/box/gum
-	icon = 'icons/obj/storage.dmi'
-
-/obj/item/storage/box/donkpockets
-	icon = 'icons/obj/storage.dmi'
-
-/obj/item/storage/box/papersack
-	icon = 'icons/obj/storage.dmi'
-
-/obj/item/storage/box/mothic_rations
-	icon = 'icons/obj/storage.dmi'

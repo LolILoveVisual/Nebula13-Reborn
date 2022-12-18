@@ -43,12 +43,12 @@ SUBSYSTEM_DEF(area_spawn)
 	/// Non-optional area spawns that failed to find an area.
 	var/list/datum/area_spawn/failed_area_spawns = list()
 
-/datum/controller/subsystem/area_spawn/Initialize(start_timeofday)
+/datum/controller/subsystem/area_spawn/Initialize()
 	for(var/iterating_type in subtypesof(/datum/area_spawn))
 		var/datum/area_spawn/iterating_area_spawn = new iterating_type
 		iterating_area_spawn.try_spawn()
 	clear_cache()
-	return ..()
+	return SS_INIT_SUCCESS
 
 /**
  * Clear the cached tiles for optimization or debugging purposes.
@@ -82,14 +82,14 @@ SUBSYSTEM_DEF(area_spawn)
 	turf_list = area_turf_info["[mode]"] = list()
 
 	// Get highest priority items
-	for(var/turf/iterating_turf in area)
+	for(var/turf/iterating_turf as anything in area.get_contained_turfs())
 		// Only retain turfs of the highest priority
 		var/priority = process_turf(iterating_turf, mode)
 		if(priority > 0)
 			LAZYADDASSOC(turf_list, "[priority]", list(iterating_turf))
 
 	// Sort the priorities descending
-	return sortTim(turf_list, /proc/cmp_num_string_asc)
+	return sortTim(turf_list, GLOBAL_PROC_REF(cmp_num_string_asc))
 
 /**
  * Process a specific turf and return priority number from 0 to infinity.
@@ -253,7 +253,7 @@ SUBSYSTEM_DEF(area_spawn)
 	/// See code/__DEFINES/~skyrat_defines/automapper.dm
 	var/mode = AREA_SPAWN_MODE_OPEN
 	/// Map blacklist, this is used to determine what maps we should not spawn on.
-	var/list/blacklisted_stations = list("Blueshift", "Runtime Station", "MultiZ Debug")
+	var/list/blacklisted_stations = list("Void Raptor", "Runtime Station", "MultiZ Debug")
 	/// If failing to find a suitable area is OK, then this should be TRUE or CI will fail.
 	/// Should probably be true if the target_areas are random, such as ruins.
 	var/optional = FALSE

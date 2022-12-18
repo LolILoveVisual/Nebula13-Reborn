@@ -85,7 +85,7 @@
 /area/ruin/space)
 "sn" = (
 /obj/structure/table/wood/fancy,
-/obj/item/shield/riot/roman/fake,
+/obj/item/shield/roman/fake,
 /turf/open/floor/stone,
 /area/ruin/space)
 "sR" = (
@@ -255,7 +255,7 @@
 /area/ruin/space)
 "Vt" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/glass/bucket/wooden{
+/obj/item/reagent_containers/cup/bucket/wooden{
 	pixel_x = 9;
 	pixel_y = 3
 	},

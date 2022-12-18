@@ -34,6 +34,7 @@ All ShuttleMove procs go here
 				M.visible_message(span_warning("[shuttle] slams into [M]!"))
 				SSblackbox.record_feedback("tally", "shuttle_gib", 1, M.type)
 				log_shuttle("[key_name(M)] was shuttle gibbed by [shuttle].")
+				M.investigate_log("has been gibbed by [shuttle].", INVESTIGATE_DEATHS)
 				M.gib()
 
 
@@ -131,7 +132,8 @@ All ShuttleMove procs go here
 /atom/movable/proc/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
 	var/turf/newT = get_turf(src)
 	if (newT.z != oldT.z)
-		on_changed_z_level(oldT, newT)
+		var/same_z_layer = (GET_TURF_PLANE_OFFSET(oldT) == GET_TURF_PLANE_OFFSET(newT))
+		on_changed_z_level(oldT, newT, same_z_layer)
 
 	if(light)
 		update_light()
@@ -169,7 +171,9 @@ All ShuttleMove procs go here
 		return TRUE
 
 	contents -= oldT
+	turfs_to_uncontain += oldT
 	underlying_old_area.contents += oldT
+	underlying_old_area.contained_turfs += oldT
 	oldT.transfer_area_lighting(src, underlying_old_area)
 	//The old turf has now been given back to the area that turf originaly belonged to
 
@@ -177,7 +181,9 @@ All ShuttleMove procs go here
 	parallax_movedir = old_dest_area.parallax_movedir
 
 	old_dest_area.contents -= newT
+	old_dest_area.turfs_to_uncontain += newT
 	contents += newT
+	contained_turfs += newT
 	newT.transfer_area_lighting(old_dest_area, src)
 	return TRUE
 
@@ -200,7 +206,7 @@ All ShuttleMove procs go here
 	for(var/obj/machinery/door/airlock/other_airlock in range(2, src))  // includes src, extended because some escape pods have 1 plating turf exposed to space
 		other_airlock.shuttledocked = FALSE
 		other_airlock.air_tight = TRUE
-		INVOKE_ASYNC(other_airlock, /obj/machinery/door/.proc/close, FALSE, TRUE) // force crush
+		INVOKE_ASYNC(other_airlock, TYPE_PROC_REF(/obj/machinery/door/, close), FALSE, TRUE) // force crush
 
 /obj/machinery/door/airlock/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
 	. = ..()
@@ -289,6 +295,7 @@ All ShuttleMove procs go here
 	// the station as it is loaded in.
 	if (oldT && !is_reserved_level(oldT.z))
 		unlocked = TRUE
+		update_appearance()
 
 /************************************Mob move procs************************************/
 
@@ -343,7 +350,7 @@ All ShuttleMove procs go here
 	Connect_cable(TRUE)
 	propagate_if_no_network()
 
-/obj/structure/shuttle/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+/obj/machinery/power/shuttle_engine/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
 	. = ..()
 	if(. & MOVE_AREA)
 		. |= MOVE_CONTENTS
@@ -375,6 +382,10 @@ All ShuttleMove procs go here
 /obj/docking_port/stationary/onShuttleMove()
 	return FALSE
 
+// Holy shit go away
+/obj/effect/abstract/z_holder/onShuttleMove()
+	return FALSE
+
 // Special movable stationary port, for your mothership shenanigans
 /obj/docking_port/stationary/movable/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
 	if(!moving_dock.can_move_docking_ports || old_dock == src)
@@ -391,4 +402,4 @@ All ShuttleMove procs go here
 	return TRUE
 
 /obj/docking_port/stationary/public_mining_dock/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
-	id = "mining_public" //It will not move with the base, but will become enabled as a docking point.
+	shuttle_id = "mining_public" //It will not move with the base, but will become enabled as a docking point.

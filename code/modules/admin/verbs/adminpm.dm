@@ -60,6 +60,8 @@
 		targets["[nametag] - [client]"] = client
 
 	var/target = input(src,"To whom shall we send a message?", "Admin PM", null) as null|anything in sort_list(targets)
+	if (isnull(target))
+		return
 	cmd_admin_pm(targets[target], null)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Admin PM") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -394,7 +396,7 @@
 		var/already_logged = FALSE
 		// Full boinks will always be done to players, so we are not guarenteed that they won't have a ticket
 		if(!recipient_ticket)
-			new /datum/admin_help(send_message, recipient, TRUE)
+			new /datum/admin_help(send_message, recipient, TRUE, src) // SKYRAT EDIT - Handling tickets - ORIGINAL: new /datum/admin_help(send_message, recipient, TRUE)
 			already_logged = TRUE
 			// This action mutates our existing cached ticket information, so we recache
 			ticket = current_ticket
@@ -432,6 +434,12 @@
 		SEND_SOUND(recipient, sound('sound/effects/adminhelp.ogg'))
 		return TRUE
 
+	//SKYRAT EDIT ADDITION BEGIN - ADMIN
+	// Basically, if we realized that we shouldn't've been handling the ticket, let's bail. Otherwise, we just change who's handling it.
+	if(ticket && our_holder && !ticket.handle_issue())
+		return
+	// SKYRAT EDIT END
+
 	// Ok if we're here, either this message is for an admin, or someone somehow figured out how to send a new message as a player
 	// First case well, first
 	if(!our_holder && !recipient_holder) //neither are admins
@@ -449,6 +457,20 @@
 		return TRUE
 
 	// Ok by this point the recipient has to be an admin, and this is either an admin on admin event, or a player replying to an admin
+
+	// You're replying to a ticket that is closed. Bad move. You must have started replying before the close, and then got input()'d
+	// Lets be nice and pass this off to a new ticket, as we recomend above
+	if(!ticket)
+		to_chat(src,
+			type = MESSAGE_TYPE_ADMINPM,
+			html = span_danger("Error: Admin-PM-Send: Attempted to send a reply to a closed ticket."),
+			confidential = TRUE)
+		to_chat(src,
+			type = MESSAGE_TYPE_ADMINPM,
+			html = span_notice("Relaying message to a new admin help."),
+			confidential = TRUE)
+		GLOB.admin_help_ui_handler.perform_adminhelp(src, raw_message, FALSE)
+		return FALSE
 
 	// Let's play some music for the admin, only if they want it tho
 	if(sound_prefs & SOUND_ADMINHELP)

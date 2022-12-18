@@ -305,7 +305,6 @@
 	name = "agent headgear"
 	desc = "An exceptionally robust helmet. For alien standards, that is."
 	icon_state = "alienhelmet"
-	inhand_icon_state = "alienhelmet"
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	armor = list(MELEE = 40, BULLET = 30, LASER = 30,ENERGY = 40, BOMB = 50, BIO = 90, FIRE = 100, ACID = 100, WOUND = 15)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
@@ -328,8 +327,8 @@
 	attack_verb_simple = "attacks"
 	attack_sound = 'sound/weapons/sonic_jackhammer.ogg'
 	mouse_opacity = MOUSE_OPACITY_ICON
-	deathsound = 'sound/magic/repulse.ogg'
-	deathmessage = "falls to their knees, before exploding into a ball of gore."
+	death_sound = 'sound/magic/repulse.ogg'
+	death_message = "falls to their knees, before exploding into a ball of gore."
 	gps_name = "Captain's Signal"
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/astrum/bullet_act(obj/projectile/P)

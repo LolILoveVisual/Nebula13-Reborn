@@ -50,8 +50,8 @@
 	for(var/turf/T in anchors)
 		vines += Beam(T, "vine", maxdistance=5, beam_type=/obj/effect/ebeam/vine)
 	finish_time = world.time + growth_time
-	addtimer(CALLBACK(src, .proc/bear_fruit), growth_time)
-	addtimer(CALLBACK(src, .proc/progress_growth), growth_time/4)
+	addtimer(CALLBACK(src, PROC_REF(bear_fruit)), growth_time)
+	addtimer(CALLBACK(src, PROC_REF(progress_growth)), growth_time/4)
 	countdown.start()
 
 /obj/structure/alien/resin/flower_bud/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
@@ -79,7 +79,7 @@
 	icon_state = "bud[growth_icon]"
 	if(growth_icon == FINAL_BUD_GROWTH_ICON)
 		return
-	addtimer(CALLBACK(src, .proc/progress_growth), growth_time/4)
+	addtimer(CALLBACK(src, PROC_REF(progress_growth)), growth_time/4)
 
 /obj/structure/alien/resin/flower_bud/attack_ghost(mob/user)
 	spawner.attack_ghost(user)
@@ -92,7 +92,7 @@
 /obj/effect/ebeam/vine/Initialize(mapload)
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -134,18 +134,18 @@
 	melee_damage_upper = 20
 	minbodytemp = 100
 	combat_mode = TRUE
+	ranged_cooldown_time = 4 SECONDS
 	//del_on_death = TRUE //SKYRAT EDIT REMOVAL
-	flip_on_death = TRUE
-	deathmessage = "collapses into bits of plant matter."
+	death_message = "collapses into bits of plant matter."
 	attacked_sound = 'sound/creatures/venus_trap_hurt.ogg'
-	deathsound = 'sound/creatures/venus_trap_death.ogg'
+	death_sound = 'sound/creatures/venus_trap_death.ogg'
 	attack_sound = 'sound/creatures/venus_trap_hit.ogg'
 	unsuitable_heat_damage = 5 // heat damage is different from cold damage since coldmos is significantly more common than plasmafires
 	unsuitable_cold_damage = 2 // they now do take cold damage, but this should be sufficiently small that it does not cause major issues
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	unsuitable_atmos_damage = 0
 	/// copied over from the code from eyeballs (the mob) to make it easier for venus human traps to see in kudzu that doesn't have the transparency mutation
-	sight = SEE_SELF|SEE_MOBS|SEE_OBJS|SEE_TURFS
+	sight = SEE_SELF|SEE_MOBS|SEE_OBJS|SEE_TURFS|SEE_BLACKNESS
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	faction = list("hostile","vines","plants")
 	initial_language_holder = /datum/language_holder/venus
@@ -174,7 +174,7 @@
 	if(isliving(target))
 		var/mob/living/L = target
 		if(L.stat != DEAD)
-			adjustHealth(-maxHealth * 0.1)
+			adjustHealth(-maxHealth * 0.05) //SKYRAT EDIT: Nerfs vines (from 0.1 to 0.05-- lets see with less health)
 
 /mob/living/simple_animal/hostile/venus_human_trap/OpenFire(atom/the_target)
 	for(var/datum/beam/B in vines)
@@ -191,8 +191,8 @@
 			if(O.density)
 				return
 
-	var/datum/beam/newVine = Beam(the_target, icon_state = "vine", maxdistance = vine_grab_distance, beam_type=/obj/effect/ebeam/vine)
-	RegisterSignal(newVine, COMSIG_PARENT_QDELETING, .proc/remove_vine, newVine)
+	var/datum/beam/newVine = Beam(the_target, icon_state = "vine", maxdistance = vine_grab_distance, beam_type=/obj/effect/ebeam/vine, emissive = FALSE)
+	RegisterSignal(newVine, COMSIG_PARENT_QDELETING, PROC_REF(remove_vine), newVine)
 	vines += newVine
 	if(isliving(the_target))
 		var/mob/living/L = the_target
@@ -233,18 +233,5 @@
 	SIGNAL_HANDLER
 
 	vines -= vine
-
-//SKYRAT EDIT ADDITION
-/mob/living/simple_animal/hostile/venus_human_trap/death(gibbed)
-	for(var/i in vines)
-		qdel(i)
-	return ..()
-
-/mob/living/simple_animal/hostile/venus_human_trap/start_pulling(atom/movable/AM, state, force, supress_message)
-	if(isliving(AM))
-		to_chat(src, span_boldwarning("You cannot drag living things!"))
-		return
-	return ..()
-//SKYRAT EDIT END
 
 #undef FINAL_BUD_GROWTH_ICON

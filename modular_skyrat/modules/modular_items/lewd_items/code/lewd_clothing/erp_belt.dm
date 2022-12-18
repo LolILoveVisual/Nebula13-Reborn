@@ -11,7 +11,7 @@
 	drop_sound = 'sound/items/handling/toolbelt_drop.ogg'
 	pickup_sound =  'sound/items/handling/toolbelt_pickup.ogg'
 
-/obj/item/storage/belt/erpbelt/Initialize()
+/obj/item/storage/belt/erpbelt/Initialize(mapload)
 	. = ..()
 	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
 	atom_storage.max_total_storage = 21
@@ -36,14 +36,14 @@
 						/obj/item/spanking_pad,
 						/obj/item/clothing/sextoy/vibrator,
 						/obj/item/restraints/handcuffs/lewd,
-						/obj/item/reagent_containers/glass/lewd_filter,
+						/obj/item/reagent_containers/cup/lewd_filter,
 						/obj/item/assembly/signaler, //because it's used for several toys
 
 						//clothing
 						/obj/item/clothing/mask/ballgag,
 						/obj/item/clothing/mask/ballgag/choking,
 						/obj/item/clothing/head/domina_cap,
-						/obj/item/clothing/head/maid,
+						/obj/item/clothing/head/costume/maid,
 						/obj/item/clothing/glasses/blindfold/kinky,
 						/obj/item/clothing/ears/kinky_headphones,
 						/obj/item/clothing/suit/straight_jacket/latex_straight_jacket,
@@ -64,7 +64,7 @@
 						/obj/item/clothing/under/costume/lewdmaid,
 						/obj/item/clothing/suit/straight_jacket/shackles,
 						/obj/item/clothing/under/stripper_outfit,
-						/obj/item/clothing/under/misc/gear_harness,
+						/obj/item/clothing/under/misc/skyrat/gear_harness,
 
 						//hands
 						/obj/item/clothing/gloves/ball_mittens,
@@ -82,9 +82,9 @@
 						//chems
 						/obj/item/reagent_containers/pill/crocin,
 						/obj/item/reagent_containers/pill/camphor,
-						/obj/item/reagent_containers/glass/bottle/breast_enlarger,
-						/obj/item/reagent_containers/glass/bottle/penis_enlarger,
+						/obj/item/reagent_containers/cup/bottle/succubus_milk,
+						/obj/item/reagent_containers/cup/bottle/incubus_draft,
 						/obj/item/reagent_containers/pill/hexacrocin,
 						/obj/item/reagent_containers/pill/pentacamphor,
-						/obj/item/reagent_containers/glass/bottle/hexacrocin,
-						/obj/item/reagent_containers/glass/bottle/pentacamphor))
+						/obj/item/reagent_containers/cup/bottle/hexacrocin,
+						/obj/item/reagent_containers/cup/bottle/pentacamphor))

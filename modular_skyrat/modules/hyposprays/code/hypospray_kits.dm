@@ -19,14 +19,14 @@
 	. = ..()
 	. += span_notice("Ctrl-Shift-Click to reskin this")
 
-/obj/item/storage/hypospraykit/Initialize()
+/obj/item/storage/hypospraykit/Initialize(mapload)
 	. = ..()
 	if(!length(case_designs))
 		populate_case_designs()
 	atom_storage.max_slots = 12
 	atom_storage.can_hold = typecacheof(list(
 		/obj/item/hypospray/mkii,
-		/obj/item/reagent_containers/glass/vial
+		/obj/item/reagent_containers/cup/vial
 	))
 	update_icon_state()
 	update_icon()
@@ -63,7 +63,7 @@
 	var/casetype = cmo_case_designs
 	if(!src.cmo_case)
 		casetype = case_designs
-	var/choice = show_radial_menu(user, src , casetype, custom_check = CALLBACK(src, .proc/check_menu, user), radius = 42, require_near = TRUE)
+	var/choice = show_radial_menu(user, src , casetype, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 42, require_near = TRUE)
 	if(!choice)
 		return FALSE
 	current_case = choice
@@ -101,16 +101,16 @@
 	if(empty)
 		return
 	new /obj/item/hypospray/mkii/cmo(src)
-	new /obj/item/reagent_containers/glass/vial/large/multiver(src)
-	new /obj/item/reagent_containers/glass/vial/large/salglu(src)
-	new /obj/item/reagent_containers/glass/vial/large/synthflesh(src)
+	new /obj/item/reagent_containers/cup/vial/large/multiver(src)
+	new /obj/item/reagent_containers/cup/vial/large/salglu(src)
+	new /obj/item/reagent_containers/cup/vial/large/synthflesh(src)
 
 /obj/item/storage/box/vials
 	name = "box of hypovials"
 
 /obj/item/storage/box/vials/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/glass/vial/small( src )
+		new /obj/item/reagent_containers/cup/vial/small( src )
 
 /obj/item/storage/box/hypospray
 	name = "box of hypospray kits"

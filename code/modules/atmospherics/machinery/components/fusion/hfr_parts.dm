@@ -407,7 +407,6 @@
 	icon_state_off = "corner_off"
 	icon_state_open = "corner_open"
 	icon_state_active = "corner_active"
-	dir = SOUTHEAST
 
 /obj/item/paper/guides/jobs/atmos/hypertorus
 	name = "paper- 'Quick guide to safe handling of the HFR'"
@@ -459,14 +458,17 @@
 
 /obj/item/hfr_box/body/fuel_input
 	name = "HFR box fuel input"
+	icon_state = "box_fuel"
 	part_path = /obj/machinery/atmospherics/components/unary/hypertorus/fuel_input
 
 /obj/item/hfr_box/body/moderator_input
 	name = "HFR box moderator input"
+	icon_state = "box_moderator"
 	part_path = /obj/machinery/atmospherics/components/unary/hypertorus/moderator_input
 
 /obj/item/hfr_box/body/waste_output
 	name = "HFR box waste output"
+	icon_state = "box_waste"
 	part_path = /obj/machinery/atmospherics/components/unary/hypertorus/waste_output
 
 /obj/item/hfr_box/body/interface
@@ -487,6 +489,15 @@
 		var/direction = get_dir(src, box)
 		if(box.box_type == "corner")
 			if(ISDIAGONALDIR(direction))
+				switch(direction)
+					if(NORTHEAST)
+						direction = EAST
+					if(SOUTHEAST)
+						direction = SOUTH
+					if(SOUTHWEST)
+						direction = WEST
+					if(NORTHWEST)
+						direction = NORTH
 				box.dir = direction
 				parts |= box
 			continue

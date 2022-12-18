@@ -3,6 +3,7 @@
 	desc = "A green tactical belt made for storing military grade hardware."
 	icon = 'modular_skyrat/master_files/icons/obj/clothing/belts.dmi'
 	worn_icon = 'modular_skyrat/master_files/icons/mob/clothing/belt.dmi'
+	worn_icon_teshari = 'modular_skyrat/master_files/icons/mob/clothing/species/teshari/belt.dmi'
 	icon_state = "russian_green_belt"
 	inhand_icon_state = "security"
 	worn_icon_state = "russian_green_belt"
@@ -16,7 +17,7 @@
 /obj/item/storage/belt/military/nri/medic
 	name = "blue tactical belt"
 	desc = "A blue tactical belt made for storing military grade hardware."
-	icon_state = "russian_white_belt" //Consistency with backpacks and other gear.
+	icon_state = "russian_white_belt"
 	worn_icon_state = "russian_white_belt"
 
 /obj/item/storage/belt/military/nri/engineer

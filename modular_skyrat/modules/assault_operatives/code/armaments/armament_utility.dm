@@ -15,14 +15,9 @@
 	cost = 8
 
 /datum/armament_entry/assault_operatives/utility/armor/infiltrator
-	name = "Infiltrator Bundle"
-	item_type = /obj/item/storage/toolbox/infiltrator
+	name = "Infiltrator MODsuit"
+	item_type = /obj/item/mod/control/pre_equipped/infiltrator
 	cost = 4
-
-/datum/armament_entry/assault_operatives/utility/gun_maint
-	item_type = /obj/item/gun_maintenance_supplies
-	cost = 1
-	max_purchase = 5
 
 /datum/armament_entry/assault_operatives/utility/survival_pack
 	item_type = /obj/item/storage/box/nri_survival_pack
@@ -103,11 +98,6 @@
 	description = "When activated, this cell powered device will block all outgoing radio communication."
 	item_type = /obj/item/jammer
 	cost = 4
-	
-/datum/armament_entry/assault_operatives/utility/deluxe_id
-	name = "Deluxe Agent ID Card"
-	item_type = /obj/item/card/id/advanced/chameleon/black
-	cost = 5
 
 /datum/armament_entry/assault_operatives/utility/codespeak
 	item_type = /obj/item/language_manual/codespeak_manual/unlimited
@@ -119,11 +109,11 @@
 	item_type = /obj/item/storage/box/syndie_kit/throwing_weapons
 	cost = 3
 	max_purchase = 3
-	
+
 /datum/armament_entry/assault_operatives/utility/binoculars
 	item_type = /obj/item/binoculars
 	cost = 1
-	
+
 /datum/armament_entry/assault_operatives/utility/emp_flashlight
 	name = "EMP Flashlight"
 	description = "Flash this at someone to hit them with an electromagnetic pulse."

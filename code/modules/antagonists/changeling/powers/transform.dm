@@ -96,7 +96,6 @@
 /obj/item/changeling
 	name = "flesh"
 	slot_flags = ALL
-	allowed = list(/obj/item/changeling)
 	item_flags = DROPDEL
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
@@ -142,17 +141,7 @@
 		return
 	..()
 	changeling.transform(user, chosen_prof)
-	
-	// SKYRAT EDIT START
-	var/mob/dum = user.tgui.dummy_holder
-	dum.name = chosen_prof.name
-	for(var/obj/item/item in dum)
-		if(!dum.dropItemToGround(item))
-			qdel(item)
-			dum.regenerate_icons()
-	changeling.transform(dum, chosen_prof)
-	// SKYRAT EDIT END
-	
+
 	SEND_SIGNAL(user, COMSIG_CHANGELING_TRANSFORM)
 	return TRUE
 
@@ -171,7 +160,7 @@
 		disguise_image.overlays = snap.overlays
 		disguises[current_profile.name] = disguise_image
 
-	var/chosen_name = show_radial_menu(user, user, disguises, custom_check = CALLBACK(src, .proc/check_menu, user), radius = 40, require_near = TRUE, tooltips = TRUE)
+	var/chosen_name = show_radial_menu(user, user, disguises, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 40, require_near = TRUE, tooltips = TRUE)
 	if(!chosen_name)
 		return
 

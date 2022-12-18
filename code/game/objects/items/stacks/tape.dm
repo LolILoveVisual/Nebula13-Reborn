@@ -46,23 +46,6 @@
 	if(!istype(target))
 		return
 
-	//SKYRAT EDIT ADDITION
-	if(istype(target, /obj/item/clothing/shoes/combat/peacekeeper))
-		var/obj/item/clothing/shoes/combat/peacekeeper/boot = target
-		var/datum/component/squeak/annoyance = boot.GetComponent(/datum/component/squeak)
-		if(!annoyance)
-			to_chat(user, "<span class='notice'>[src] have already been silenced!")
-			return
-		if(do_after(user, 30, target=boot))
-			if(use(5))
-				to_chat(user, "<span class='notice'>You tape [src] tightly together, reducing the sound they make as you walk.</span>")
-				qdel(annoyance)
-				return
-			else
-				to_chat(user, "<span class='notice'>[src] does not have enough tape in it!</span>")
-				return
-	//SKYRAT EDIT END
-
 	if(target.embedding && target.embedding == conferred_embed)
 		to_chat(user, span_warning("[target] is already coated in [src]!"))
 		return
@@ -89,7 +72,7 @@
 		to_chat(user, span_notice("You finish wrapping [target] with [src]."))
 		target.name = "[prefix] [target.name]"
 
-		if(istype(target, /obj/item/grenade))
+		if(isgrenade(target))
 			var/obj/item/grenade/sticky_bomb = target
 			sticky_bomb.sticky = TRUE
 

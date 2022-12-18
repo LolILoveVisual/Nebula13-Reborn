@@ -51,7 +51,7 @@
 	item_type = /obj/item/suppressor
 
 /datum/opposing_force_equipment/gear/extendedrag
-	item_type = /obj/item/reagent_containers/glass/rag/large
+	item_type = /obj/item/reagent_containers/cup/rag/large
 	description = "A damp rag made with extra absorbant materials. The perfectly innocent tool to kidnap your local assistant. \
 			Apply up to 30u liquids and use combat mode to smother anyone not covering their mouth."
 
@@ -119,14 +119,6 @@
 	item_type = /obj/item/card/id/advanced/chameleon
 	description = "A highly advanced chameleon ID card. Touch this card on another ID card or player to choose which accesses to copy. Has special magnetic properties which force it to the front of wallets."
 
-/datum/opposing_force_equipment/gear/agentcarddeluxe
-	name = "Deluxe Agent Identification Card"
-	item_type = /obj/item/card/id/advanced/chameleon/black
-	description = "Created by Cybersun Industries to be the ultimate for field operations, this upgraded Agent ID \
-	comes with all the fluff of the original, but with an upgraded microchip - allowing for the storage of all \
-	standard Nanotrasen access codes in one conveinent package. Now in glossy olive by default!"
-	admin_note = "Has no limit on how many accesses it can store."
-
 /datum/opposing_force_equipment/gear/chameleonheadsetdeluxe
 	name = "Advanced Chameleon Headset"
 	item_type = /obj/item/radio/headset/chameleon/advanced
@@ -143,9 +135,17 @@
 /datum/opposing_force_equipment/gear/combatmedkit
 	name = "Syndicate Combat Medic Kit"
 	item_type = /obj/item/storage/medkit/tactical
-	description = "This first aid kit is a suspicious brown and red. Included is a combat stimulant injector \
-			for rapid healing, a medical night vision HUD for quick identification of injured personnel, \
-			and other supplies helpful for a field medic."
+	description = "This first aid kit is a suspicious black and red. Included is a number of atropine medipens \
+			for rapid stabilization, sutures and regenerative mesh for wound treatment, and patches \
+			for faster healing on the field. Also comes with basic medical tools and sterlizer."
+
+/datum/opposing_force_equipment/gear/combatmedkit_premium
+	name = "Syndicate Combat Medical Suite"
+	item_type = /obj/item/storage/medkit/tactical/premium
+	description = "This first aid kit is a suspicious black and red. Included is an unloaded combat chemical injector \
+			for suit-penetrative chem delivery, a medical science night vision HUD for quick identification of injured personnel and chemical supplies, \
+			improved medical supplies, including Interdyne-approved pharmaceuticals, a hacked cybernetic surgery toolset arm implant, \
+			and some helpful MODsuit modules for for field medical use and operative physiopharmaceutical augmentation."
 
 /datum/opposing_force_equipment/gear/ai_module
 	name = "Syndicate AI Law Module"

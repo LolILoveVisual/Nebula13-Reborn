@@ -2,7 +2,7 @@
 	name = "hypnotic goggles"
 	desc = "Woaa-a-ah... This is lewd."
 	icon_state = "hypnogoggles"
-	inhand_icon_state = "hypnogoggles"
+	inhand_icon_state = "hypnogoggles_pink"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_eyes.dmi'
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_eyes.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
@@ -21,7 +21,7 @@
 /obj/item/clothing/glasses/hypno/equipped(mob/user, slot)//Adding hypnosis on equip
 	. = ..()
 	victim = user
-	if(slot != ITEM_SLOT_EYES)
+	if(!(slot & ITEM_SLOT_EYES))
 		return
 	if(!(iscarbon(victim) && victim.client?.prefs?.read_preference(/datum/preference/toggle/erp/sex_toy)))
 		return
@@ -56,11 +56,6 @@
 		"pink" = image (icon = src.icon, icon_state = "hypnogoggles_pink"),
 		"teal" = image(icon = src.icon, icon_state = "hypnogoggles_teal"))
 
-//to update model lol
-/obj/item/clothing/glasses/hypno/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob)
-
 //to change model
 /obj/item/clothing/glasses/hypno/AltClick(mob/user)
 	if(color_changed)
@@ -68,7 +63,7 @@
 	. = ..()
 	if(.)
 		return
-	var/choice = show_radial_menu(user, src, hypnogoggles_designs, custom_check = CALLBACK(src, .proc/check_menu, user), radius = 36, require_near = TRUE)
+	var/choice = show_radial_menu(user, src, hypnogoggles_designs, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 36, require_near = TRUE)
 	if(!choice)
 		return FALSE
 	current_hypnogoggles_color = choice
@@ -83,8 +78,9 @@
 		return FALSE
 	return TRUE
 
-/obj/item/clothing/glasses/hypno/Initialize()
+/obj/item/clothing/glasses/hypno/Initialize(mapload)
 	. = ..()
+	AddElement(/datum/element/update_icon_updates_onmob)
 	update_icon_state()
 	update_icon()
 	if(!length(hypnogoggles_designs))
@@ -147,4 +143,7 @@
 			new /datum/hallucination/chat(owner, TRUE, FALSE, span_hypnophrase("[hypnotic_phrase]"))
 
 /datum/brain_trauma/very_special/induced_hypnosis/handle_hearing(datum/source, list/hearing_args)
+	if(!owner.can_hear() || owner == hearing_args[HEARING_SPEAKER])
+		return
+
 	hearing_args[HEARING_RAW_MESSAGE] = target_phrase.Replace(hearing_args[HEARING_RAW_MESSAGE], span_hypnophrase("$1"))

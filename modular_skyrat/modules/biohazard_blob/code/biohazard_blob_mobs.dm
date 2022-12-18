@@ -40,7 +40,7 @@
 	maxbodytemp = INFINITY
 	gender = MALE
 
-/mob/living/simple_animal/hostile/biohazard_blob/oil_shambler/Initialize()
+/mob/living/simple_animal/hostile/biohazard_blob/oil_shambler/Initialize(mapload)
 	. = ..()
 	update_overlays()
 
@@ -157,7 +157,7 @@
 	minbodytemp = 0
 	maxbodytemp = INFINITY
 
-/mob/living/simple_animal/hostile/biohazard_blob/centaur/Initialize()
+/mob/living/simple_animal/hostile/biohazard_blob/centaur/Initialize(mapload)
 	. = ..()
 	update_overlays()
 
@@ -166,7 +166,7 @@
 	var/datum/reagents/R = new/datum/reagents(300)
 	R.my_atom = src
 	R.add_reagent(/datum/reagent/toxin/mutagen, 20)
-	chem_splash(loc, 5, list(R))
+	chem_splash(loc, null, 5, list(R))
 	playsound(src, 'sound/effects/splat.ogg', 50, TRUE)
 	return ..()
 

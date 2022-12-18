@@ -12,7 +12,7 @@
 /datum/team/contractor_team
 	show_roundend_report = FALSE
 
-/datum/antagonist/traitor/contractor_support/forge_traitor_objectives()
+/datum/antagonist/traitor/contractor_support/on_gain()
 	var/datum/objective/generic_objective = new
 
 	generic_objective.name = "Follow the Contractor's Orders"
@@ -21,6 +21,7 @@
 	generic_objective.completed = TRUE
 
 	objectives += generic_objective
+	return ..()
 
 /datum/outfit/contractor_partner
 	name = "Contractor Support Unit"
@@ -28,7 +29,7 @@
 	uniform = /obj/item/clothing/under/chameleon
 	suit = /obj/item/clothing/suit/chameleon
 	back = /obj/item/storage/backpack
-	belt = /obj/item/modular_computer/tablet/pda/chameleon
+	belt = /obj/item/modular_computer/pda/chameleon
 	mask = /obj/item/clothing/mask/cigarette/syndicate
 	shoes = /obj/item/clothing/shoes/chameleon/noslip
 	ears = /obj/item/radio/headset/chameleon

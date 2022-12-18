@@ -36,10 +36,11 @@
 	var/fitting = "tube"
 	///Count of number of times switched on/off, this is used to calculate the probability the light burns out
 	var/switchcount = 0
-	///True if rigged to explode
-	var/rigged = FALSE
 	///Cell reference
 	var/obj/item/stock_parts/cell/cell
+	/// If TRUE, then cell is null, but one is pretending to exist.
+	/// This is to defer emergency cell creation unless necessary, as it is very expensive.
+	var/has_mock_cell = TRUE
 	///If true, this fixture generates a very weak cell at roundstart
 	var/start_with_cell = TRUE
 	///Currently in night shift mode?
@@ -83,14 +84,17 @@
 	. = ..()
 
 	if(!mapload) //sync up nightshift lighting for player made lights
-		var/area/our_area = get_area(src)
+		var/area/our_area = get_room_area(src)
 		var/obj/machinery/power/apc/temp_apc = our_area.apc
 		nightshift_enabled = temp_apc?.nightshift_lights
 
-	if(start_with_cell && !no_low_power)
-		cell = new/obj/item/stock_parts/cell/emergency_light(src)
+	if(!start_with_cell || no_low_power)
+		has_mock_cell = FALSE
 
-	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, .proc/on_light_eater)
+	if(is_station_level(z))
+		RegisterSignal(SSdcs, COMSIG_GLOB_GREY_TIDE_LIGHT, PROC_REF(grey_tide)) //Only put the signal on station lights
+
+	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
 	AddElement(/datum/element/atmos_sensitive, mapload)
 	return INITIALIZE_HINT_LATELOAD
 
@@ -103,10 +107,10 @@
 		if("bulb")
 			if(prob(5))
 				break_light_tube(TRUE)
-	addtimer(CALLBACK(src, .proc/update, FALSE), 0.1 SECONDS)
+	update(trigger = FALSE)
 
 /obj/machinery/light/Destroy()
-	var/area/local_area = get_area(src)
+	var/area/local_area =get_room_area(src)
 	if(local_area)
 		on = FALSE
 	QDEL_NULL(cell)
@@ -147,8 +151,8 @@
 
 
 //SKYRAT EDIT ADDITION BEGIN - AESTHETICS
-#define LIGHT_ON_DELAY_UPPER 3 SECONDS
-#define LIGHT_ON_DELAY_LOWER 1 SECONDS
+#define LIGHT_ON_DELAY_UPPER (3 SECONDS)
+#define LIGHT_ON_DELAY_LOWER (1 SECONDS)
 //SKYRAT EDIT END
 
 // Area sensitivity is traditionally tied directly to power use, as an optimization
@@ -157,12 +161,12 @@
 	. = ..()
 	if(!.)
 		return
-	var/area/our_area = get_area(src)
-	RegisterSignal(our_area, COMSIG_AREA_FIRE_CHANGED, .proc/handle_fire)
+	var/area/our_area =get_room_area(src)
+	RegisterSignal(our_area, COMSIG_AREA_FIRE_CHANGED, PROC_REF(handle_fire))
 
 /obj/machinery/light/on_enter_area(datum/source, area/area_to_register)
 	..()
-	RegisterSignal(area_to_register, COMSIG_AREA_FIRE_CHANGED, .proc/handle_fire)
+	RegisterSignal(area_to_register, COMSIG_AREA_FIRE_CHANGED, PROC_REF(handle_fire))
 	handle_fire(area_to_register, area_to_register.fire)
 
 /obj/machinery/light/on_exit_area(datum/source, area/area_to_unregister)
@@ -186,7 +190,9 @@
 		var/color_set = bulb_colour
 		if(color)
 			color_set = color
-		var/area/local_area = get_area(src)
+		if(reagents)
+			START_PROCESSING(SSmachines, src)
+		var/area/local_area =get_room_area(src)
 		if (local_area?.fire)
 			color_set = bulb_low_power_colour
 		else if (nightshift_enabled)
@@ -200,10 +206,7 @@
 		var/matching = light && brightness_set == light.light_range && power_set == light.light_power && color_set == light.light_color
 		if(!matching)
 			switchcount++
-			if(rigged)
-				if(status == LIGHT_OK && trigger)
-					explode()
-			else if( prob( min(60, (switchcount**2)*0.01) ) )
+			if( prob( min(60, (switchcount**2)*0.01) ) )
 				if(trigger)
 					burn_out()
 			else
@@ -222,7 +225,7 @@
 			maploaded = FALSE
 		else if(!turning_on)
 			turning_on = TRUE
-			addtimer(CALLBACK(src, .proc/turn_on, trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
+			addtimer(CALLBACK(src, PROC_REF(turn_on), trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
 		//SKYRAT EDIT END
 	else if(has_emergency_power(LIGHT_EMERGENCY_POWER_USE) && !turned_off())
 		use_power = IDLE_POWER_USE
@@ -247,7 +250,7 @@
 		static_power_used = 0
 	else if(on) //Light is on, just recalculate usage
 		var/static_power_used_new = 0
-		var/area/local_area = get_area(src)
+		var/area/local_area = get_room_area(src)
 		if (nightshift_enabled && !local_area?.fire)
 			static_power_used_new = nightshift_brightness * nightshift_light_power * power_consumption_rate
 		else
@@ -266,15 +269,17 @@
 		if(!start_only)
 			do_sparks(3, TRUE, src)
 		var/delay = rand(BROKEN_SPARKS_MIN, BROKEN_SPARKS_MAX)
-		addtimer(CALLBACK(src, .proc/broken_sparks), delay, TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
+		addtimer(CALLBACK(src, PROC_REF(broken_sparks)), delay, TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
 
-/obj/machinery/light/process()
-	if (!cell)
-		return PROCESS_KILL
-	if(has_power())
-		if (cell.charge == cell.maxcharge)
-			return PROCESS_KILL
-		cell.charge = min(cell.maxcharge, cell.charge + LIGHT_EMERGENCY_POWER_USE) //Recharge emergency power automatically while not using it
+/obj/machinery/light/process(delta_time)
+	if(has_power()) //If the light is being powered by the station.
+		if(cell)
+			if(cell.charge == cell.maxcharge && !reagents) //If the cell is done mooching station power, and reagents don't need processing, stop processing
+				return PROCESS_KILL
+			cell.charge = min(cell.maxcharge, cell.charge + LIGHT_EMERGENCY_POWER_USE) //Recharge emergency power automatically while not using it
+	if(reagents) //with most reagents coming out at 300, and with most meaningful reactions coming at 370+, this rate gives a few seconds of time to place it in and get out of dodge regardless of input.
+		reagents.adjust_thermal_energy(8 * reagents.total_volume * SPECIFIC_HEAT_DEFAULT * delta_time)
+		reagents.handle_reactions()
 	if(low_power_mode && !use_emergency_power(LIGHT_EMERGENCY_POWER_USE))
 		update(FALSE) //Disables emergency mode and sets the color to normal
 
@@ -292,6 +297,10 @@
 	update()
 
 /obj/machinery/light/get_cell()
+	if (has_mock_cell)
+		cell = new /obj/item/stock_parts/cell/emergency_light(src)
+		has_mock_cell = FALSE
+
 	return cell
 
 // examine verb
@@ -306,8 +315,8 @@
 			. += "The [fitting] is burnt out."
 		if(LIGHT_BROKEN)
 			. += "The [fitting] has been smashed."
-	if(cell)
-		. += "Its backup power charge meter reads [round((cell.charge / cell.maxcharge) * 100, 0.1)]%."
+	if(cell || has_mock_cell)
+		. += "Its backup power charge meter reads [has_mock_cell ? 100 : round((cell.charge / cell.maxcharge) * 100, 0.1)]%."
 	//SKYRAT EDIT ADDITION
 	if(constant_flickering)
 		. += span_danger("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
@@ -324,16 +333,6 @@
 		var/obj/item/lightreplacer/replacer = tool
 		replacer.ReplaceLight(src, user)
 		return
-
-	//SKYRAT EDIT ADDITION
-	if(istype(tool, /obj/item/multitool) && constant_flickering)
-		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
-		if(do_after(user, 2 SECONDS, src))
-			stop_flickering()
-			to_chat(user, span_notice("You repair the ballast of [src]!"))
-		return
-
-	//SKYRAT EDTI END
 
 	// attempt to insert light
 	if(istype(tool, /obj/item/light))
@@ -354,17 +353,17 @@
 			to_chat(user, span_notice("You replace [light_object]."))
 		else
 			to_chat(user, span_notice("You insert [light_object]."))
+		if(length(light_object.reagents.reagent_list))
+			create_reagents(LIGHT_REAGENT_CAPACITY, SEALED_CONTAINER | TRANSPARENT)
+			light_object.reagents.trans_to(reagents, LIGHT_REAGENT_CAPACITY)
 		status = light_object.status
 		switchcount = light_object.switchcount
-		rigged = light_object.rigged
 		brightness = light_object.brightness
 		on = has_power()
 		update()
 
 		qdel(light_object)
 
-		if(on && rigged)
-			explode()
 		return
 
 	// attempt to stick weapon into light socket
@@ -408,9 +407,11 @@
 			drop_light_tube()
 		new /obj/item/stack/cable_coil(loc, 1, "red")
 	transfer_fingerprints_to(new_light)
-	if(!QDELETED(cell))
-		new_light.cell = cell
-		cell.forceMove(new_light)
+
+	var/obj/item/stock_parts/cell/real_cell = get_cell()
+	if(!QDELETED(real_cell))
+		new_light.cell = real_cell
+		real_cell.forceMove(new_light)
 		cell = null
 	qdel(src)
 
@@ -445,13 +446,13 @@
 // returns if the light has power /but/ is manually turned off
 // if a light is turned off, it won't activate emergency power
 /obj/machinery/light/proc/turned_off()
-	var/area/local_area = get_area(src)
+	var/area/local_area = get_room_area(src)
 	return !local_area.lightswitch && local_area.power_light || flickering || constant_flickering //SKYRAT EDIT CHANGE
 
 // returns whether this light has power
 // true if area has power and lightswitch is on
 /obj/machinery/light/proc/has_power()
-	var/area/local_area = get_area(src)
+	var/area/local_area =get_room_area(src)
 	//SKYRAT EDIT ADDITION BEGIN
 	if(isnull(local_area))
 		return FALSE
@@ -461,23 +462,27 @@
 // returns whether this light has emergency power
 // can also return if it has access to a certain amount of that power
 /obj/machinery/light/proc/has_emergency_power(power_usage_amount)
-	if(no_low_power || !cell)
+	if(no_low_power || (!cell && !has_mock_cell))
 		return FALSE
+	if (has_mock_cell)
+		return status == LIGHT_OK
 	if(power_usage_amount ? cell.charge >= power_usage_amount : cell.charge)
 		return status == LIGHT_OK
+	return FALSE
 
 // attempts to use power from the installed emergency cell, returns true if it does and false if it doesn't
 /obj/machinery/light/proc/use_emergency_power(power_usage_amount = LIGHT_EMERGENCY_POWER_USE)
 	if(!has_emergency_power(power_usage_amount))
 		return FALSE
-	if(cell.charge > 300) //it's meant to handle 120 W, ya doofus
+	var/obj/item/stock_parts/cell/real_cell = get_cell()
+	if(real_cell.charge > 300) //it's meant to handle 120 W, ya doofus
 		visible_message(span_warning("[src] short-circuits from too powerful of a power cell!"))
 		burn_out()
 		return FALSE
-	cell.use(power_usage_amount)
+	real_cell.use(power_usage_amount)
 	set_light(
 		l_range = brightness * bulb_low_power_brightness_mul,
-		l_power = max(bulb_low_power_pow_min, bulb_low_power_pow_mul * (cell.charge / cell.maxcharge)),
+		l_power = max(bulb_low_power_pow_min, bulb_low_power_pow_mul * (real_cell.charge / real_cell.maxcharge)),
 		l_color = bulb_low_power_colour
 		)
 	return TRUE
@@ -490,13 +495,16 @@
 	flickering = TRUE
 	if(on && status == LIGHT_OK)
 		for(var/i in 1 to amount)
-			if(status != LIGHT_OK)
+			if(status != LIGHT_OK || !has_power())
 				break
 			on = !on
 			update(FALSE, TRUE) //SKYRAT EDIT CHANGE
 			sleep(rand(5, 15))
-		on = (status == LIGHT_OK)
-		update(FALSE, TRUE) //SKYRAT EDIT CHANGE
+		if(has_power())
+			on = (status == LIGHT_OK)
+		else
+			on = FALSE
+		update(FALSE, TRUE) // SKYRAT EDIT CHANGE
 		. = TRUE //did we actually flicker?
 	flickering = FALSE
 
@@ -587,8 +595,10 @@
 
 /obj/machinery/light/proc/drop_light_tube(mob/user)
 	var/obj/item/light/light_object = new light_type()
+	if(reagents)
+		reagents.trans_to(light_object.reagents, LIGHT_REAGENT_CAPACITY)
+		QDEL_NULL(reagents)
 	light_object.status = status
-	light_object.rigged = rigged
 	light_object.brightness = brightness
 
 	// light item inherits the switchcount, then zero it
@@ -648,7 +658,7 @@
 // called when area power state changes
 /obj/machinery/light/power_change()
 	SHOULD_CALL_PARENT(FALSE)
-	var/area/local_area = get_area(src)
+	var/area/local_area =get_room_area(src)
 	set_on(local_area.lightswitch && local_area.power_light)
 
 // called when heated
@@ -660,16 +670,6 @@
 	if(prob(max(0, exposed_temperature - 673)))   //0% at <400C, 100% at >500C
 		break_light_tube()
 
-// explode the light
-
-/obj/machinery/light/proc/explode()
-	set waitfor = 0
-	break_light_tube() // break it first to give a warning
-	sleep(2)
-	explosion(src, light_impact_range = 2, flash_range = -1)
-	sleep(1)
-	qdel(src)
-
 /obj/machinery/light/proc/on_light_eater(obj/machinery/light/source, datum/light_eater)
 	SIGNAL_HANDLER
 	. = COMPONENT_BLOCK_LIGHT_EATER
@@ -679,8 +679,13 @@
 	tube?.burn()
 	return
 
+/obj/machinery/light/proc/grey_tide(datum/source, list/grey_tide_areas)
+	SIGNAL_HANDLER
 
-
+	for(var/area_type in grey_tide_areas)
+		if(!istype(get_area(src), area_type))
+			continue
+		INVOKE_ASYNC(src, PROC_REF(flicker))
 
 /obj/machinery/light/floor
 	name = "floor light"

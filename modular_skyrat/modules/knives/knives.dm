@@ -25,7 +25,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	resistance_flags = FLAMMABLE
 
-/obj/item/storage/belt/bowie_sheath/Initialize()
+/obj/item/storage/belt/bowie_sheath/Initialize(mapload)
 	. = ..()
 	atom_storage.max_slots = 1
 	atom_storage.max_total_storage = WEIGHT_CLASS_BULKY
@@ -34,7 +34,7 @@
 		))
 
 /obj/item/storage/belt/bowie_sheath/AltClick(mob/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, TRUE))
+	if(!user.canUseTopic(src, be_close = TRUE, no_dexterity = TRUE))
 		return
 	if(length(contents))
 		var/obj/item/knife = contents[1]

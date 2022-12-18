@@ -18,7 +18,7 @@
 	environment_smash = 0
 	},
 /turf/open/floor/mineral/plastitanium/red,
-/area/shuttle/caravan/syndicate1)
+/area/shuttle/ruin/caravan/syndicate1)
 "fh" = (
 /obj/machinery/camera/xray/directional/west{
 	c_tag = "External View";
@@ -26,10 +26,10 @@
 	pixel_x = 32
 	},
 /turf/closed/wall/mineral/plastitanium/nodiagonal,
-/area/shuttle/caravan/syndicate1)
+/area/shuttle/ruin/caravan/syndicate1)
 "fp" = (
 /turf/closed/wall/mineral/plastitanium/nodiagonal,
-/area/shuttle/caravan/syndicate1)
+/area/shuttle/ruin/caravan/syndicate1)
 "qx" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
@@ -37,7 +37,19 @@
 	dir = 8
 	},
 /turf/open/floor/mineral/plastitanium/red,
-/area/shuttle/caravan/syndicate1)
+/area/shuttle/ruin/caravan/syndicate1)
+"uM" = (
+/obj/machinery/power/apc/highcap/ten_k/directional/west{
+	name = "Syndicate Fighter Power Controller";
+	req_access = list("syndicate")
+	},
+/obj/machinery/computer/security{
+	dir = 1;
+	network = list("caravansyndicate1")
+	},
+/obj/structure/cable,
+/turf/open/floor/mineral/plastitanium/red,
+/area/shuttle/ruin/caravan/syndicate1)
 "uW" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/computer/camera_advanced/shuttle_docker/caravan/syndicate1,
@@ -49,28 +61,17 @@
 	specialfunctions = 4
 	},
 /turf/open/floor/mineral/plastitanium/red,
-/area/shuttle/caravan/syndicate1)
+/area/shuttle/ruin/caravan/syndicate1)
 "vD" = (
 /obj/machinery/porta_turret/syndicate/energy{
 	dir = 4
 	},
 /turf/closed/wall/mineral/plastitanium,
-/area/shuttle/caravan/syndicate1)
-"vK" = (
-/obj/machinery/power/apc/highcap/ten_k{
-	dir = 8;
-	name = "Syndicate Fighter APC";
-	pixel_x = -25;
-	req_access = list("syndicate")
-	},
-/obj/machinery/computer/security{
-	dir = 1;
-	network = list("caravansyndicate1")
-	},
-/obj/structure/cable,
-/turf/open/floor/mineral/plastitanium/red,
-/area/shuttle/caravan/syndicate1)
-"wV" = (
+/area/shuttle/ruin/caravan/syndicate1)
+"Jv" = (
+/turf/template_noop,
+/area/template_noop)
+"MC" = (
 /obj/effect/mapping_helpers/airlock/locked,
 /obj/machinery/door/airlock/hatch{
 	id_tag = "caravansyndicate1_bolt";
@@ -81,38 +82,32 @@
 /obj/docking_port/mobile{
 	callTime = 50;
 	dir = 4;
-	dwidth = 4;
-	height = 5;
-	id = "caravansyndicate1";
+	shuttle_id = "caravansyndicate1";
 	ignitionTime = 25;
 	name = "Syndicate Fighter";
 	port_direction = 2;
-	preferred_direction = 4;
-	width = 9
+	preferred_direction = 4
 	},
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/access/all/syndicate/general,
 /turf/open/floor/plating,
-/area/shuttle/caravan/syndicate1)
-"Jv" = (
-/turf/template_noop,
-/area/template_noop)
+/area/shuttle/ruin/caravan/syndicate1)
 "YP" = (
-/obj/structure/shuttle/engine/propulsion/burst{
+/obj/machinery/power/shuttle_engine/propulsion/burst{
 	dir = 8
 	},
 /turf/closed/wall/mineral/plastitanium,
-/area/shuttle/caravan/syndicate1)
+/area/shuttle/ruin/caravan/syndicate1)
 "YX" = (
 /turf/closed/wall/mineral/plastitanium,
-/area/shuttle/caravan/syndicate1)
+/area/shuttle/ruin/caravan/syndicate1)
 
 (1,1,1) = {"
 Jv
 Jv
 YP
 fp
-wV
+MC
 fp
 YP
 Jv
@@ -124,7 +119,7 @@ YP
 fp
 uW
 aA
-vK
+uM
 fp
 YP
 Jv

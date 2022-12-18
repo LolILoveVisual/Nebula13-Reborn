@@ -6,9 +6,11 @@
 	assigned_icon_state = "assigned_centcom"
 
 /datum/id_trim/nri
-	assignment = "Novaya Rossiyskaya Imperiya Soldier"
+	assignment = "NRI Soldier"
 	trim_icon = 'modular_skyrat/master_files/icons/obj/card.dmi'
 	trim_state = "trim_nri"
+	department_color = COLOR_RED_LIGHT
+	subdepartment_color = COLOR_COMMAND_BLUE
 	sechud_icon_state = "hud_nri"
 
 /datum/id_trim/nri/New()
@@ -17,29 +19,33 @@
 
 
 /datum/id_trim/nri/commander
-	assignment = "Novaya Rossiyskaya Imperiya Platoon Commander"
+	assignment = "NRI Platoon Commander"
 	trim_state = "trim_nri_commander"
+	department_color = COLOR_RED_LIGHT
+	subdepartment_color = COLOR_COMMAND_BLUE
 	sechud_icon_state = "hud_nri_commander"
 
 /datum/id_trim/nri/heavy
-	assignment = "Novaya Rossiyskaya Imperiya Heavy Soldier"
+	assignment = "NRI Heavy Soldier"
 
 /datum/id_trim/nri/medic
-	assignment = "Novaya Rossiyskaya Imperiya Corpsman"
+	assignment = "NRI Corpsman"
 
 /datum/id_trim/nri/engineer
-	assignment = "Novaya Rossiyskaya Imperiya Combat Engineer"
+	assignment = "NRI Combat Engineer"
 
 /datum/id_trim/nri/diplomat
-	assignment = "Novaya Rossiyskaya Imperiya Diplomat"
+	assignment = "NRI Diplomat"
 	trim_state = "trim_nri_commander"
+	department_color = COLOR_RED_LIGHT
+	subdepartment_color = COLOR_COMMAND_BLUE
 	sechud_icon_state = "hud_nri_commander"
 
 /datum/id_trim/nri/diplomat/major
-	assignment = "Novaya Rossiyskaya Imperiya Major"
+	assignment = "NRI Major"
 
 /datum/id_trim/nri/diplomat/scientist
-	assignment = "Novaya Rossiyskaya Imperiya Research Inspector"
+	assignment = "NRI Research Inspector"
 
 /datum/id_trim/nri/diplomat/doctor
-	assignment = "Novaya Rossiyskaya Imperiya Medical Inspector"
+	assignment = "NRI Medical Inspector"

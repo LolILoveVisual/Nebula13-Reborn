@@ -8,7 +8,7 @@
 /datum/sprite_accessory/frills/is_hidden(mob/living/carbon/human/human, obj/item/bodypart/bodypart)
 	if(
 		(human.head && (human.head.flags_inv & HIDEEARS)) \
-		|| human.try_hide_mutant_parts \
+		|| (key in human.try_hide_mutant_parts) \
 		|| !bodypart \
 	)
 		return TRUE
@@ -45,3 +45,13 @@
 	icon_state = "cobraears"
 	icon = 'modular_skyrat/master_files/icons/mob/sprite_accessory/frills.dmi'
 	color_src = USE_MATRIXED_COLORS
+
+/datum/sprite_accessory/frills/neckfrills
+	name = "Neck Frills"
+	icon_state = "neck"
+	icon = 'modular_skyrat/master_files/icons/mob/sprite_accessory/frills.dmi'
+
+/datum/sprite_accessory/frills/neckfrillsfuller
+	name = "Neck Frills (Fuller)"
+	icon_state = "neckfull"
+	icon = 'modular_skyrat/master_files/icons/mob/sprite_accessory/frills.dmi'
