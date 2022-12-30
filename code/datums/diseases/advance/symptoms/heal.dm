@@ -322,9 +322,9 @@
 /datum/symptom/heal/coma
 	name = "Regenerative Coma"
 	desc = "The virus causes the host to fall into a death-like coma when severely damaged, then rapidly fixes the damage."
-	stealth = 0
-	resistance = 2
-	stage_speed = -3
+	stealth = 8
+	resistance = 8
+	stage_speed = 10
 	transmittable = -2
 	level = 8
 	passive_message = "<span class='notice'>The pain from your wounds makes you feel oddly sleepy...</span>"
@@ -342,7 +342,7 @@
 	if(!.)
 		return
 	if(A.totalStageSpeed() >= 7)
-		power = 1.5
+		power = 10
 	if(A.totalResistance() >= 4)
 		stabilize = TRUE
 	if(A.totalStealth() >= 2)
