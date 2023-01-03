@@ -1,15 +1,14 @@
 {
 	"name": "Ride them with your ass",
-	"description": "Self explanatory.",
+	"description": "It's your turn to take the lead.",
 	"usage": "other",
 	"category": "Lewd",
 	"color": "purple",
 	"lewd": 1,
 	"distance_allowed": 0,
 	"message": [
-		"%USER% rides %TARGET%.",
-		"%USER% bounces on %TARGET%'s knob.",
-		"%USER% rear jiggles as they bounce on %TARGET%."
+		"%USER% rides %TARGET%'s dick.",
+		"%USER% bounces on %TARGET%'s knob."
 	],
 	"sound_use": 0,
 	"sound_possible": [

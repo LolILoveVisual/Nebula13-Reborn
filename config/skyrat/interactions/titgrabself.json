@@ -1,14 +1,14 @@
 {
 	"name": "Grope your own breasts.",
-	"description": "Self explanatory.",
+	"description": "We do a little teasing.",
 	"usage": "self",
 	"category": "Lewd",
 	"lewd": 1,
 	"distance_allowed": 1,
 	"message": [
-		"%USER% gropes their own breasts.",
-		"%USER% tightly holds their breasts.",
-		"%USER% fondles with their nipples."
+		"%USER% softly squeezes their own breasts.",
+		"%USER% gips their breasts.",
+		"%USER% delicately teases their nipple."
 	],
 	"sound_use": 0,
 	"sound_possible": [
