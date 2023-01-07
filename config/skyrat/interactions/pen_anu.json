@@ -1,15 +1,15 @@
 {
 	"name": "Fuck their ass",
-	"description": "Self explanatory.",
+	"description": "Show em' some love.",
 	"usage": "other",
 	"category": "Lewd",
 	"color": "purple",
 	"lewd": 1,
 	"distance_allowed": 0,
 	"message": [
-		"%USER% fucks %TARGET%'s ass.",
-		"%USER% goes balls deep in %TARGET%'s ass.",
-		"%USER% makes %TARGET%'s rear jiggle."
+		"%USER% pounds %TARGET%'s ass.",
+		"%USER% goes balls deep in %TARGET%'s ass over and over.",
+		"%USER% slams their hips up against %TARGET%'s ass hard."
 	],
 	"sound_use": 0,
 	"sound_possible": [

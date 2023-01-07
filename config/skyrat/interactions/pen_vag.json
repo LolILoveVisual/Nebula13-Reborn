@@ -1,6 +1,6 @@
 {
 	"name": "Fuck their pussy",
-	"description": "Self explanatory.",
+	"description": "Show em' some love.",
 	"usage": "other",
 	"category": "Lewd",
 	"color": "purple",
@@ -8,7 +8,9 @@
 	"distance_allowed": 0,
 	"message": [
 		"%USER% fucks %TARGET%'s vagina.",
-		"%USER% goes balls deep in %TARGET%'s vagina."
+		"%USER% shoves their cock deep into %TARGET%'s vagina.",
+		"%USER% pounds %TARGET%'s pussy.",
+		"%USER% thrusts in and out of %TARGET%'s cunt."
 	],
 	"sound_use": 0,
 	"sound_possible": [

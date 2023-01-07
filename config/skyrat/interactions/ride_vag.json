@@ -1,13 +1,13 @@
 {
 	"name": "Ride them with your pussy",
-	"description": "Self explanatory.",
+	"description": "It's your turn to take the lead.",
 	"usage": "other",
 	"category": "Lewd",
 	"color": "purple",
 	"lewd": 1,
 	"distance_allowed": 0,
 	"message": [
-		"%USER% rides %TARGET%.",
+		"%USER% forces their pussy onto %TARGET%'s cock.",
 		"%USER% bounces on %TARGET%'s knob."
 	],
 	"sound_use": 0,
