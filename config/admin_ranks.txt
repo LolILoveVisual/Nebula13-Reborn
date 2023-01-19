@@ -60,7 +60,7 @@ Exclude =
 Edit = EVERYTHING
 
 Name = Game Admin
-Include = @ STEALTH SOUND DEBUG
+Include = @ STEALTH SOUND
 Exclude =
 Edit =
 
@@ -69,7 +69,7 @@ Include = EVERYTHING
 Exclude =
 Edit = EVERYTHING
 
-Name = Seer
+Name = Lazy Master
 Include = EVERYTHING
 Exclude = AUTOADMIN
 Edit = EVERYTHING

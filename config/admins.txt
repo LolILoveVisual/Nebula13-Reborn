@@ -5,12 +5,12 @@
 #If SQL-based admin loading is enabled, admins listed here will always be loaded first and will override any duplicate entries in the database.
 
 anothergenericplayer = Badmin
-sirpudin = Senior Admin
-ppduin = Senior Admin
-addervfx = Head Admin
-rerom = Head Admin
+sirpudin = Host
+ppduin = Host
 argentinogostoso = Game Admin
 fidgetybacchus = Game Admin
-Bruno-Asbahr = Game Admin
-dantesousa = Seer
-romulo27 = Seer
+Bruno-Asbahr = Senior Admin
+dantesousa = Head Admin
+romulo27 = Lazy Master
+miiyabox = Lazy Master
+BxsSvg = Senior Admin
