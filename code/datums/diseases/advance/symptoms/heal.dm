@@ -72,7 +72,7 @@
 	if(A.totalTransmittable() >= 6)
 		nearspace_penalty = 1
 	if(A.totalStageSpeed() >= 6)
-		power = 2
+		power = 8
 
 /datum/symptom/heal/starlight/proc/CanTileHealDirectional(turf/turf_to_check, direction)
 	if(direction == ZTRAIT_UP)
@@ -281,7 +281,7 @@
 	if(!.)
 		return
 	if(A.totalStageSpeed() >= 7)//SKYRAT EDIT: Brings Noc regen into line with the rest of the healing symptoms.
-		power = 2
+		power = 8
 
 /datum/symptom/heal/darkness/CanHeal(datum/disease/advance/A)
 	var/mob/living/M = A.affected_mob
