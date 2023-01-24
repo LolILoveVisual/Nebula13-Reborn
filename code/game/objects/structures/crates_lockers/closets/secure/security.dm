@@ -100,7 +100,11 @@
 	new /obj/item/flashlight/seclite(src)
 	new /obj/item/clothing/gloves/krav_maga/sec(src)
 	new /obj/item/door_remote/head_of_security(src)
-
+	new /obj/item/gun/ballistic/automatic/Wardengun(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/assault_ops_shotgun/hollowpoint(src)
+	new	/obj/item/ammo_box/magazine/multi_sprite/assault_ops_shotgun(src)
+	new	/obj/item/ammo_box/magazine/multi_sprite/assault_ops_shotgun(src)
+	new	/obj/item/ammo_box/magazine/multi_sprite/assault_ops_shotgun(src)
 
 /obj/structure/closet/secure_closet/security
 	name = "security officer's locker"
