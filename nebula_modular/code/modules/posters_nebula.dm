@@ -10,7 +10,7 @@
 /obj/structure/sign/poster/contraband/poster2
 	name = "2001 Poster"
 	desc = "Im sorry Dave, Im afraid I can't do that."
-	icon = 'modular_nebula/icons/obj/MeloPosters.dmi
+	icon = 'modular_nebula/icons/obj/MeloPosters.dmi'
 	icon_state = "poster2"
 
 /obj/structure/sign/poster/contraband/poster3
