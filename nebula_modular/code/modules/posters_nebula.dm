@@ -3,13 +3,13 @@
 //Custom Posters Below//
 /obj/structure/sign/poster/contraband/poster1
 	name = "Hey! Poster"
-	desc = "Pretty beatiful'"
+	desc = "Pretty beatiful"
 	icon = 'modular_nebula/icons/obj/MeloPosters.dmi
 	icon_state = "poster1"
 
 /obj/structure/sign/poster/contraband/poster2
 	name = "2001 Poster"
-	desc = "I'm sorry Dave, I'm afraid I can't do that."
+	desc = "Im sorry Dave, Im afraid I can't do that."
 	icon = 'modular_nebula/icons/obj/MeloPosters.dmi
 	icon_state = "poster2"
 
