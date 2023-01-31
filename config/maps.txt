@@ -14,17 +14,32 @@ Format:
 
 map metastation
 	#default
-	minplayers 25
+	minplayers 10
 	#voteweight 0.5
 	votable
 endmap
 
 map deltastation
-	minplayers 50
+	minplayers 10
 	votable
 endmap
 
 map voidraptor
 	maxplayers 100
+	votable
+endmap
+
+map kilostation
+	minplayers 10
+	votable
+endmap
+
+map iceboxstation
+	minplayers 10
+	votable
+endmap
+
+map tramstation
+	minplayers 10
 	votable
 endmap
