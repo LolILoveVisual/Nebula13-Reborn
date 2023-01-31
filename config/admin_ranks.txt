@@ -40,7 +40,7 @@ Exclude = AUTOADMIN
 Edit =
 
 Name = Moderator
-Include = ADMIN
+Include = ADMIN BAN SPAWN
 Exclude =
 Edit =
 

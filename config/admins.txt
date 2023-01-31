@@ -4,13 +4,11 @@
 #Ranks will match to those with the same name in admin_ranks.txt, if a match isn't found the user won't be adminned.
 #If SQL-based admin loading is enabled, admins listed here will always be loaded first and will override any duplicate entries in the database.
 
-anothergenericplayer = Badmin
 sirpudin = Host
 ppduin = Host
-argentinogostoso = Game Admin
 fidgetybacchus = Game Admin
 Bruno-Asbahr = Senior Admin
 dantesousa = Head Admin
-romulo27 = Lazy Master
 miiyabox = Lazy Master
 BxsSvg = Senior Admin
+Manlekvf = Trial Admin

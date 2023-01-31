@@ -3,9 +3,8 @@
 <body>
 <body style="background-color:powderblue;">
 
-<h1>Bem vindo a burguês station!</h1>
+<h1>Bem vindo ao Cogumelo Station!</h1>
 <h1>Não se esqueça de ler as regras em nosso discord.</h1>
-<h1>Atenção: Você precisa colocar 150 caracteres no flavor text, se vai ser algo random ou pra rp, é com você, só coloque qualquer coisa ou faça uma biografia adequada ao seu personagem se for entrar no roleplay.</h1>
 
 <p><a href="https://discord.gg/CSYsBsGhdz">Clique aqui para entrar em nosso discord</a></p>
 
