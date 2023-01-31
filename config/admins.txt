@@ -12,3 +12,4 @@ dantesousa = Head Admin
 miiyabox = Lazy Master
 BxsSvg = Senior Admin
 Manlekvf = Trial Admin
+ArgentinoGostoso = Game Admin
